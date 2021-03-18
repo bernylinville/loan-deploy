@@ -6,9 +6,9 @@
   register: docker_already_running
 
 - include_tasks: docker.yml
-  when: '"active" in docker_already_running.stdout'
+#   when: '"active" in docker_already_running.stdout'
 
-- include_tasks: docker.yml
-  when:
-  - container_manager == "docker"
-  - '"active" not in docker_already_running.stdout'
+# - include_tasks: docker.yml
+#   when:
+#   - container_manager == "docker"
+#   - '"active" not in docker_already_running.stdout'

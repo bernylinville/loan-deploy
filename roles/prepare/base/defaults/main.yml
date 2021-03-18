@@ -29,13 +29,13 @@ host_distribution_release: >-
   {{ ansible_distribution_release }}
   {%- endif -%}
 
-base_yum_repo: http://mirrors.aliyun.com/centos/$releasever/os/$basearch/
+base_yum_repo: http://mirrors.cloud.tencent.com/centos/$releasever/os/$basearch/
 
 epel_yum_repo: >-
   {%- if ansible_distribution_major_version is version('8', '<') -%}
-  http://mirrors.aliyun.com/epel/$releasever/$basearch
+  http://mirrors.cloud.tencent.com/epel/$releasever/$basearch
   {%- else -%}
-  https://mirrors.aliyun.com/epel/$releasever/Everything/$basearch
+  https://mirrors.cloud.tencent.com/epel/$releasever/Everything/$basearch
   {%- endif -%}
 
 # 禁用防护墙
@@ -63,7 +63,15 @@ container_manager: containerd
 # # 自定义hosts记录
 # # 举例：
 # custom_hosts:
-#   "127.0.0.1": 
+#   "127.0.0.1":
 #   - "one.domain.custom.local"
 #   - "tow.domain.custom.local"
 custom_hosts: {}
+
+# Docker版本
+# yum list docker-ce --showduplicates --enablerepo=docker-ce | sort -r
+docker_version: 20.10.5
+containerd_version: 1.4.4
+# containerd_version: 1.4.4-3
+# CentOS
+docker_yum_repo: https://mirrors.cloud.tencent.com/docker-ce/linux/centos/{{ ansible_distribution_major_version }}/$basearch/stable

@@ -9,36 +9,36 @@
 - name: 删除 fstab swap 相关配置
   lineinfile:
     path: /etc/fstab
-    regexp: 'swap'
+    regexp: "swap"
     state: absent
     backup: yes
 
-# - name: 加载内核模块
-#   modprobe:
-#     name: "{{ item }}"
-#     state: present
-#   with_items:
-#   - sunrpc
-#   - ip_vs
-#   - ip_vs_rr
-#   - ip_vs_sh
-#   - ip_vs_wrr
-#   - br_netfilter
-#   ignore_errors: true
+- name: 加载内核模块
+  modprobe:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - sunrpc
+    - ip_vs
+    - ip_vs_rr
+    - ip_vs_sh
+    - ip_vs_wrr
+    - br_netfilter
+  ignore_errors: true
 
-# - name: 加载nf_conntrack for kernel < 4.19
-#   modprobe:
-#     name: nf_conntrack_ipv4
-#     state: present
-#   when: ansible_kernel is version('4.19', '<')
-#   ignore_errors: true
+- name: 加载nf_conntrack for kernel < 4.19
+  modprobe:
+    name: nf_conntrack_ipv4
+    state: present
+  when: ansible_kernel is version('4.19', '<')
+  ignore_errors: true
 
-# - name: 加载nf_conntrack for kernel >= 4.19
-#   modprobe:
-#     name: nf_conntrack
-#     state: present
-#   when: ansible_kernel is version('4.19', '>=')
-#   ignore_errors: true
+- name: 加载nf_conntrack for kernel >= 4.19
+  modprobe:
+    name: nf_conntrack
+    state: present
+  when: ansible_kernel is version('4.19', '>=')
+  ignore_errors: true
 
 # - name: 设置 systemd-modules-load 配置
 #   template:
@@ -69,7 +69,7 @@
   shell: "sysctl -w sunrpc.tcp_slot_table_entries=128"
   ignore_errors: true
 
-- name: 添加集群节点 hostname 信息到 hosts 文件中
+- name: 添加节点 hostname 信息到 hosts 文件中
   blockinfile:
     path: /etc/hosts
     block: |-
@@ -90,14 +90,14 @@
   lineinfile:
     dest: /etc/hosts
     line: "127.0.0.1 localhost localhost.localdomain"
-    regexp: '^127.0.0.1.*$'
+    regexp: "^127.0.0.1.*$"
     state: present
 
 - name: 确认 hosts 文件中 localhost ipv6 配置正确
   lineinfile:
     dest: /etc/hosts
     line: "::1 localhost6 localhost6.localdomain"
-    regexp: '^::1.*$'
+    regexp: "^::1.*$"
     state: present
 
 - name: 创建 systemd 配置目录
