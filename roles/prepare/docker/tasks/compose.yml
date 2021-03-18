@@ -17,3 +17,11 @@
     src: docker-compose
     dest: "{{ docker_compose_path }}"
     mode: 0755
+
+- name: Create a symbolic link for docker-compose
+  file:
+    src: "{{ docker_compose_path }}"
+    dest: "{{ docker_compose_smlink_path }}"
+    owner: root
+    group: root
+    state: link

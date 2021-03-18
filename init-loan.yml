@@ -26,11 +26,10 @@
 #   roles:
 #   - role: load-balancer
 
-# - hosts:
-#   - all
-#   roles:
-#   - role: chrony
-
+- hosts:
+    - consul
+  roles:
+    - role: consul
 # # 安装 etcd，并分发etcd证书到master节点
 # - hosts:
 #   - etcd

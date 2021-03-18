@@ -1,0 +1,10 @@
+version: '3.6'
+
+services:
+  consul-server-3:
+    image: consul:1.9.4
+    container_name: consul-server-3
+    restart: always
+    network_mode: host
+    # 以服务端模式启动
+    command: agent -server -client=0.0.0.0 -node=consul-server-3 -bind={{ consul_server_3 }} -datacenter=dc01 -retry-join={{ consul_server_1 }}

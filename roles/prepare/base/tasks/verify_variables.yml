@@ -6,8 +6,8 @@
 - name: 校验 consul 节点数量
   run_once: true
   assert:
-    that: groups['consul']|length == 3
-    msg: "请添加 3 个节点到 consul 节点组中。"
+    that: groups['consul']|length == 4
+    msg: "请添加 4 个节点到 consul 节点组中。"
 
 - name: 校验 loan 节点数量
   run_once: true
@@ -38,7 +38,6 @@
   assert:
     that: groups['mysql']|length == 2
     msg: "请添加 2 个节点到 mysql 节点组中。"
-
 # - name: 校验 new-etcd 节点组数量
 #   assert:
 #     that: groups['new-etcd']|length <= 1
@@ -87,9 +86,9 @@
 #   assert:
 #     that: lb_kube_apiserver_port|int != 6443
 #     msg: "当前 {{ inventory_hostname }} 节点 6443 端口已使用，请更换端口。"
-#   when: 
+#   when:
 #   - lb_kube_apiserver_ip is not defined
-#   - inventory_hostname in ((groups['kube-master'] + groups['new-master'])|unique) 
+#   - inventory_hostname in ((groups['kube-master'] + groups['new-master'])|unique)
 
 # - block:
 #   - name: 校验 lb 节点组设置节点是否满足要求
@@ -104,8 +103,8 @@
 #       msg: "lb 节点与 master 节点有复用情况，lb_kube_apiserver_port 请勿使用6443端口。"
 #     when:
 #     - inventory_hostname in groups['lb']
-#     - inventory_hostname in ((groups['kube-master'] + groups['new-master'])|unique) 
-#   when: 
+#     - inventory_hostname in ((groups['kube-master'] + groups['new-master'])|unique)
+#   when:
 #   - lb_mode != 'slb'
 #   - lb_kube_apiserver_ip is defined
 

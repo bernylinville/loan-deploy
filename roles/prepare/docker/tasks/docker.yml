@@ -3,7 +3,7 @@
 
 # 公共系统参数设置
 - include_tasks: common.yml
-  when: '"active" not in docker_already_running.stdout'
 
+  # when: '"active" not in docker_already_running.stdout'
 # 安装 docker-compose
 - include_tasks: compose.yml

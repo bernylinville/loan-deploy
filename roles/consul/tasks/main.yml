@@ -1,0 +1,42 @@
+---
+# tasks file for consul
+- name: 准备 consul 相关目录
+  file:
+    name: "{{ item }}"
+    state: directory
+  with_items:
+    - "{{ consul_dir }}"
+
+- name: upload consul-server-1 compose file
+  template:
+    src: "consul-server-1.yml"
+    dest: "{{ consul_dir }}/docker-compose.yml"
+  when: ansible_host == consul_server_1
+
+- name: upload consul-server-2 compose file
+  template:
+    src: "consul-server-2.yml"
+    dest: "{{ consul_dir }}/docker-compose.yml"
+  when: ansible_host == consul_server_2
+
+- name: upload consul-server-3 compose file
+  template:
+    src: "consul-server-3.yml"
+    dest: "{{ consul_dir }}/docker-compose.yml"
+  when: ansible_host == consul_server_3
+
+- name: upload consul-client-1 compose file
+  template:
+    src: "consul-client-1.yml"
+    dest: "{{ consul_dir }}/docker-compose.yml"
+  when: ansible_host == consul_client_1
+
+- name: Update consul
+  command:
+    cmd: docker-compose pull
+    chdir: "{{ consul_dir }}"
+
+- name: Start consul
+  command:
+    cmd: docker-compose up -d
+    chdir: "{{ consul_dir }}"
