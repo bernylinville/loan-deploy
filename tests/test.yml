@@ -1,4 +1,30 @@
 - hosts:
-    - consul
+    - all
   roles:
-    - role: consul
+    - ../roles/prepare/base
+
+- name: configure the master redis server
+  hosts: redis-master
+  # vars:
+  #   - redis_password: "{{ redis_password }}"
+  roles:
+    - ../roles/redis
+
+- name: configure redis slaves
+  hosts: redis-slave
+  vars:
+    - redis_slaveof: "{{ redis_master_ip }} {{ redis_port }}"
+  roles:
+    - ../roles/redis
+
+- name: configure redis sentinel nodes
+  hosts: redis-sentinel
+  vars:
+    - redis_sentinel: true
+    - redis_sentinel_monitors:
+        - name: master01
+          host: "{{ redis_master_ip }}"
+          port: 6379
+          auth_pass: "{{ redis_password }}"
+  roles:
+    - ../roles/redis

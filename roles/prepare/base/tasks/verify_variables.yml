@@ -15,11 +15,11 @@
     that: groups['loan']|length == 2
     msg: "请添加 2 个节点到 loan 节点组中。"
 
-- name: 校验 redis 节点数量
-  run_once: true
-  assert:
-    that: groups['redis']|length == 3
-    msg: "请添加 3 个节点到 redis 节点组中。"
+# - name: 校验 redis 节点数量
+#   run_once: true
+#   assert:
+#     that: groups['redis']|length == 3
+#     msg: "请添加 3 个节点到 redis 节点组中。"
 
 - name: 校验 mongo 节点数量
   run_once: true

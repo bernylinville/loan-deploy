@@ -14,22 +14,45 @@
           NO_PROXY: "{{ no_proxy | default ('') }}"
       no_log: true
 
-- hosts:
+- name: 基础环境准备
+  hosts:
     - all
   roles:
     - prepare/base
     - prepare/docker
   environment: "{{ proxy_env }}"
-# 进行 apiserver 负载均衡
-# - hosts:
-#   - all
-#   roles:
-#   - role: load-balancer
 
-- hosts:
+- name: 安装 consul
+  hosts:
     - consul
   roles:
     - role: consul
+
+- name: configure the master redis server
+  hosts: redis-master
+  # vars:
+  #   - redis_password: "{{ redis_password }}"
+  roles:
+    - redis
+
+- name: configure redis slaves
+  hosts: redis-slave
+  vars:
+    - redis_slaveof: "{{ redis_master_ip }} {{ redis_port }}"
+  roles:
+    - redis
+
+- name: configure redis sentinel nodes
+  hosts: redis-sentinel
+  vars:
+    - redis_sentinel: true
+    - redis_sentinel_monitors:
+        - name: master01
+          host: "{{ redis_master_ip }}"
+          port: 6379
+          auth_pass: "{{ redis_password }}"
+  roles:
+    - redis
 # # 安装 etcd，并分发etcd证书到master节点
 # - hosts:
 #   - etcd
